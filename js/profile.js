@@ -310,10 +310,14 @@ onAuthStateChanged(auth, async (user) => {
     // (pas de round-trip réseau) : on l'affiche immédiatement, avant même
     // de lancer les lectures Firestore ci-dessous. La page n'a plus besoin
     // d'attendre Firestore pour montrer quelque chose.
-    displayName.textContent = user.displayName || "Utilisateur";
-    email.textContent = user.email || "";
-    accountEmail.textContent = user.email || "—";
-    accountId.textContent = user.uid;
+    // Chaque élément est vérifié avant écriture : onAuthStateChanged peut
+    // se déclencher avant que tous les éléments du DOM soient garantis
+    // disponibles selon le navigateur/l'ordre de chargement, et un accès
+    // direct sur un élément absent plantait tout le reste du callback.
+    if (displayName)  displayName.textContent = user.displayName || "Utilisateur";
+    if (email)         email.textContent = user.email || "";
+    if (accountEmail)  accountEmail.textContent = user.email || "—";
+    if (accountId)     accountId.textContent = user.uid;
 
     // Les deux lectures Firestore ci-dessous (publicProfiles et users) sont
     // indépendantes l'une de l'autre : on les lance en parallèle avec
