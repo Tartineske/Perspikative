@@ -313,31 +313,31 @@ permalink: /profile
     height: 1.1em;
     width: 62%;
     max-width: 220px;
-    border-radius: 7px;
+    border-radius: 25px;
   }
 
   #profileBio .skeleton-bar {
     top: 0.1em;
     left: 0;
-    height: 0.95em;
+    height: 1em;
     width: 88%;
-    border-radius: 6px;
+    border-radius: 25px;
   }
 
   #accountEmail .skeleton-bar {
     top: 0.12em;
     left: 0;
-    height: 1em;
+    height: 1.1em;
     width: 170px;
-    border-radius: 6px;
+    border-radius: 25px;
   }
 
   #accountId .skeleton-bar {
     top: 0.12em;
     left: 0;
-    height: 1em;
+    height: 1.1em;
     width: 210px;
-    border-radius: 6px;
+    border-radius: 25px;
   }
 
   #displayName .skeleton-bar::before,
@@ -367,9 +367,6 @@ permalink: /profile
     animation: skeleton-shimmer 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
 
-  /* Le contenu réel est invisible tant que le skeleton est affiché, puis
-     apparait en fondu (fade-in) exactement au même endroit, sans
-     décalage puisqu'il occupait déjà sa place dans le flux normal. */
   #displayName > span.real-text,
   #profileBio > span.real-text,
   #accountEmail > span.real-text,
@@ -1844,8 +1841,8 @@ permalink: /profile
     <img src="/icons/rechercher.svg" alt="Rechercher">
   </a>
   
-  <script type="module" src="/js/firebase.js"></script>
-  <script type="module" src="/js/profile.js"></script>
+  <script type="module" src="/jss/firebase.js"></script>
+  <script type="module" src="/jss/profile.js"></script>
 
   <script>
     const menuToggle = document.getElementById('menuToggle');
