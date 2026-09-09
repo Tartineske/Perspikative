@@ -282,6 +282,114 @@ permalink: /profile
     font-style: italic;
   }
 
+  /* ===== SKELETONS DE CHARGEMENT (displayName + profileBio) =====
+     Le texte réel reste dans le flux normal (aucun layout shift) ; le
+     skeleton est positionné par-dessus en absolu, exactement à la même
+     place, puis disparait en fondu une fois les données prêtes
+     (voir .is-loaded plus bas + profile.js). */
+  #displayName,
+  #profileBio {
+    position: relative;
+  }
+
+  #displayName .skeleton-bar,
+  #profileBio .skeleton-bar {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #displayName .skeleton-bar {
+    top: 0.14em;
+    left: 0;
+    height: 1.1em;
+    width: 62%;
+    max-width: 220px;
+    border-radius: 7px;
+  }
+
+  #profileBio .skeleton-bar {
+    top: 0.1em;
+    left: 0;
+    height: 0.95em;
+    width: 88%;
+    border-radius: 6px;
+  }
+
+  #displayName .skeleton-bar::before,
+  #profileBio .skeleton-bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--skeleton-base);
+  }
+
+  #displayName .skeleton-bar::after,
+  #profileBio .skeleton-bar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      var(--skeleton-shine) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: skeleton-shimmer 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+
+  /* Le texte réel est invisible tant que le skeleton est affiché, puis
+     apparait en fondu (fade-in) exactement au même endroit, sans
+     décalage puisqu'il occupait déjà sa place dans le flux normal. */
+  #displayName > span.real-text,
+  #profileBio > span.real-text {
+    display: inline-block;
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #displayName.is-loaded .skeleton-bar,
+  #profileBio.is-loaded .skeleton-bar {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #displayName.is-loaded > span.real-text,
+  #profileBio.is-loaded > span.real-text {
+    opacity: 1;
+  }
+
+  @keyframes skeleton-shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #displayName .skeleton-bar::after,
+    #profileBio .skeleton-bar::after {
+      animation: none;
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --skeleton-base: rgba(0, 0, 0, 0.09);
+      --skeleton-shine: rgba(0, 0, 0, 0.16);
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --skeleton-base: rgba(255, 255, 255, 0.09);
+      --skeleton-shine: rgba(255, 255, 255, 0.22);
+    }
+  }
+
   /* Pousse le badge d'ancienneté tout en bas de la carte */
   .profile-spacer {
     flex: 1;
@@ -1428,13 +1536,13 @@ permalink: /profile
         </button>
 
         <div class="profile-identity">
-          <div id="displayName">Chargement…</div>
+          <div id="displayName"><span class="skeleton-bar" aria-hidden="true"></span><span class="real-text">Utilisateur</span></div>
           <div id="profileUsername" hidden></div>
         </div>
 
         <div class="profile-bio-block">
           <p class="profile-bio-label">Bio</p>
-          <p id="profileBio">Chargement…</p>
+          <p id="profileBio"><span class="skeleton-bar" aria-hidden="true"></span><span class="real-text"></span></p>
         </div>
 
         <div class="profile-spacer"></div>
